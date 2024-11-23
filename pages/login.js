@@ -20,7 +20,7 @@ export default function Login() {
       localStorage.setItem("token", response.data.token);
 
       setTimeout(() => {
-        router.push("/dashboard");
+        router.push("/");
       }, 2000);
     } catch (error) {
       setMessage(error.response?.data?.error || "Login failed!");

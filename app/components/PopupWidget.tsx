@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import { useForm, useWatch } from "react-hook-form";
 import {
@@ -14,7 +15,7 @@ export function PopupWidget() {
     handleSubmit,
     reset,
     control,
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
   } = useForm({
     mode: "onTouched",
   });
@@ -152,21 +153,9 @@ export function PopupWidget() {
                         type="text"
                         id="full_name"
                         placeholder="John Doe"
-                        {...register("name", {
-                          required: "Full name is required",
-                          maxLength: 80,
-                        })}
-                        className={`w-full px-3 py-2 text-gray-600 placeholder-gray-300 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring ${
-                          errors.name
-                            ? "border-red-600 focus:border-red-600 ring-red-100"
-                            : "border-gray-300 focus:border-indigo-600 ring-indigo-100"
-                        }`}
+                        {...register("name", { maxLength: 80 })}
+                        className={`w-full px-3 py-2 text-gray-600 placeholder-gray-300 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring border-gray-300 focus:border-indigo-600 ring-indigo-100`}
                       />
-                      {errors.name && (
-                        <div className="mt-1 text-sm text-red-400">
-                          {errors.name.message as string}
-                        </div>
-                      )}
                     </div>
 
                     <div className="mb-4">
@@ -179,25 +168,10 @@ export function PopupWidget() {
                       <input
                         type="email"
                         id="email"
-                        {...register("email", {
-                          required: "Enter your email",
-                          pattern: {
-                            value: /^\S+@\S+$/i,
-                            message: "Please enter a valid email",
-                          },
-                        })}
+                        {...register("email")}
                         placeholder="you@company.com"
-                        className={`w-full px-3 py-2 text-gray-600 placeholder-gray-300 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring ${
-                          errors.email
-                            ? "border-red-600 focus:border-red-600 ring-red-100"
-                            : "border-gray-300 focus:border-indigo-600 ring-indigo-100"
-                        }`}
+                        className={`w-full px-3 py-2 text-gray-600 placeholder-gray-300 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring border-gray-300 focus:border-indigo-600 ring-indigo-100`}
                       />
-                      {errors.email && (
-                        <div className="mt-1 text-sm text-red-400">
-                          {errors.email.message as string}
-                        </div>
-                      )}
                     </div>
 
                     <div className="mb-4">
@@ -210,21 +184,10 @@ export function PopupWidget() {
                       <textarea
                         rows={4}
                         id="message"
-                        {...register("message", {
-                          required: "Enter your Message",
-                        })}
+                        {...register("message")}
                         placeholder="Your Message"
-                        className={`w-full px-3 py-2 text-gray-600 placeholder-gray-300 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring ${
-                          errors.message
-                            ? "border-red-600 focus:border-red-600 ring-red-100"
-                            : "border-gray-300 focus:border-indigo-600 ring-indigo-100"
-                        }`}
+                        className={`w-full px-3 py-2 text-gray-600 placeholder-gray-300 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring border-gray-300 focus:border-indigo-600 ring-indigo-100`}
                       ></textarea>
-                      {errors.message && (
-                        <div className="mt-1 text-sm text-red-400">
-                          {errors.message.message as string}
-                        </div>
-                      )}
                     </div>
                     <div className="mb-3">
                       <button

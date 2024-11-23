@@ -2,7 +2,7 @@
 import Link from "next/link";
 import ThemeChanger from "./DarkSwitch";
 import Image from "next/image";
-import { Disclosure } from "@headlessui/react";
+import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/react";
 
 export const Navbar = () => {
   const navigation = [
@@ -15,7 +15,7 @@ export const Navbar = () => {
 
   return (
     <div className="w-full font-poppins">
-       <nav className="container relative flex flex-wrap items-center justify-between p-6 mx-auto lg:justify-between xl:px-1">
+      <nav className="container relative flex flex-wrap items-center justify-between p-6 mx-auto lg:justify-between xl:px-1">
         {/* Logo */}
         <Link href="/">
           <span className="flex items-center space-x-2 text-lg font-medium text-white">
@@ -36,7 +36,8 @@ export const Navbar = () => {
           <div className="hidden mr-3 lg:flex nav__item">
             <Link
               href="/"
-              className="px-6 py-2 text-white bg-indigo-600 rounded-md md:ml-5 hover:bg-indigo-500 transition-all">
+              className="px-6 py-2 text-white bg-indigo-600 rounded-md md:ml-5 hover:bg-indigo-500 transition-all"
+            >
               Log Out
             </Link>
           </div>
@@ -46,13 +47,15 @@ export const Navbar = () => {
         <Disclosure>
           {({ open }) => (
             <>
-              <Disclosure.Button
+              <DisclosureButton
                 aria-label="Toggle Menu"
-                className="px-2 py-1 text-gray-500 rounded-md lg:hidden hover:text-indigo-500 focus:text-indigo-500 focus:bg-indigo-100 focus:outline-none dark:text-gray-300 dark:focus:bg-trueGray-700">
+                className="px-2 py-1 text-gray-500 rounded-md lg:hidden hover:text-indigo-500 focus:text-indigo-500 focus:bg-indigo-100 focus:outline-none dark:text-gray-300 dark:focus:bg-trueGray-700"
+              >
                 <svg
                   className="w-6 h-6 fill-current"
                   xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24">
+                  viewBox="0 0 24 24"
+                >
                   {open ? (
                     <path
                       strokeLinecap="round"
@@ -69,23 +72,25 @@ export const Navbar = () => {
                     />
                   )}
                 </svg>
-              </Disclosure.Button>
+              </DisclosureButton>
 
-              <Disclosure.Panel className="flex flex-col w-full mt-4 lg:hidden">
+              <DisclosurePanel className="flex flex-col w-full mt-4 lg:hidden">
                 {navigation.map((item, index) => (
                   <Link
                     key={index}
                     href={item.href}
-                    className="px-4 py-2 text-lg text-gray-800 rounded-md dark:text-gray-300 hover:text-indigo-500 focus:bg-indigo-100 transition-all">
+                    className="px-4 py-2 text-lg text-gray-800 rounded-md dark:text-gray-300 hover:text-indigo-500 focus:bg-indigo-100 transition-all"
+                  >
                     {item.name}
                   </Link>
                 ))}
                 <Link
                   href="/logout"
-                  className="px-6 py-2 mt-2 text-center text-white bg-red-500 rounded-md hover:bg-red-400 transition-all">
+                  className="px-6 py-2 mt-2 text-center text-white bg-red-500 rounded-md hover:bg-red-400 transition-all"
+                >
                   Log Out
                 </Link>
-              </Disclosure.Panel>
+              </DisclosurePanel>
             </>
           )}
         </Disclosure>
@@ -97,7 +102,8 @@ export const Navbar = () => {
               <li key={index}>
                 <Link
                   href={item.href}
-                  className="text-lg font-semibold text-gray-800 dark:text-gray-200 hover:text-indigo-500 transition-all">
+                  className="text-lg font-semibold text-gray-800 dark:text-gray-200 hover:text-indigo-500 transition-all"
+                >
                   {item.name}
                 </Link>
               </li>
