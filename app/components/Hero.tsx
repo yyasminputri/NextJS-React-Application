@@ -40,7 +40,7 @@ export const Hero = () => {
           <div className="max-w-2xl mb-8">
             {/* Title with Gradient */}
             <h1 className="text-2xl font-bold leading-snug tracking-tight lg:text-3xl xl:text-4xl bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 via-purple-500 to-pink-400">
-              🌟 Discover Your Next Favorite Recipe 🌟
+              🌟 Find Your Next Favorite Recipe 🌟
             </h1>
             {/* Subtitle */}
             <p className="py-4 text-sm leading-normal text-gray-500 lg:text-base xl:text-lg dark:text-gray-300 ">
