@@ -11,8 +11,9 @@ export const Navbar = () => {
     { name: "❤️ Favorites", href: "/favorites" },
     { name: "🍳 Add Recipe", href: "/add-recipe" },
     { name: "📞 Contact", href: "/contact" },
+    { name: "⭐️ Review", href: "/review" },
     { name: "👤 Admin", href: "/admin" },
-  ];
+    ];
 
   return (
     <div className="w-full font-poppins">
