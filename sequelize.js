@@ -75,8 +75,16 @@ const User = sequelize.define("User", {
   });
 
 // Relasi antar model
-Category.hasMany(Recipe, { foreignKey: 'category_id' });
-Recipe.belongsTo(Category, { foreignKey: 'category_id' });
+// Relasi antar model
+Category.hasMany(Recipe, { 
+  foreignKey: 'category_id',  // Pastikan menggunakan category_id
+  as: 'recipes' 
+});
+
+Recipe.belongsTo(Category, { 
+  foreignKey: 'category_id',  // Pastikan menggunakan category_id
+  as: 'category'  
+});
 
 
 module.exports = { sequelize, Category, Recipe, Review, User };

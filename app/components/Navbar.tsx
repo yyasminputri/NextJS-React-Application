@@ -11,6 +11,7 @@ export const Navbar = () => {
     { name: "❤️ Favorites", href: "/favorites" },
     { name: "🍳 Add Recipe", href: "/add-recipe" },
     { name: "📞 Contact", href: "/contact" },
+    { name: "👤 Admin", href: "/admin" },
   ];
 
   return (
