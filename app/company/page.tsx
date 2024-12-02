@@ -4,7 +4,7 @@ import { Download, ArrowRight } from 'lucide-react';
 
 const CompanyPage = () => {
   return (
-    <div className="min-h-screen bg-[#0F1117]">
+    <div className="min-h-screen bg-[#F8F9FF]">
       {/* First Section - Hero with Background */}
       <div className="relative min-h-[calc(100vh-64px)]">
         <div className="absolute inset-0">
@@ -34,25 +34,25 @@ const CompanyPage = () => {
         </div>
       </div>
 
-      {/* Second Section - Split Content */}
+      {/* Second Section - Split Content with light background */}
       <div className="max-w-7xl mx-auto px-4 py-16 md:py-24">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
           {/* Left Content */}
           <div className="w-full lg:w-1/2 space-y-6">
-            <h1 className="text-4xl lg:text-5xl font-bold text-white leading-tight">
+            <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
               Cari dan temukan resep dari komunitas Cookpad
             </h1>
-            <p className="text-lg text-gray-400 max-w-xl">
+            <p className="text-lg text-gray-600 max-w-xl">
               Melalui fitur pencarian di Cookpad, kamu dapat menemukan resep berdasarkan bahan atau nama hidangan,
               memastikan kamu selalu mendapat inspirasi masak setiap harinya.
             </p>
-            <p className="text-lg text-gray-400">
+            <p className="text-lg text-gray-600">
               Pengalaman ini bahkan lebih baik lagi dengan menggunakan aplikasi Cookpad secara gratis!
             </p>
             <div className="pt-4">
               <a 
                 href="#" 
-                className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors text-lg"
+                className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors text-lg"
               >
                 Unduh aplikasi <ArrowRight className="w-5 h-5" />
               </a>
@@ -96,20 +96,20 @@ const CompanyPage = () => {
 
           {/* Right Content */}
           <div className="w-full lg:w-1/2 space-y-6">
-            <h1 className="text-4xl lg:text-5xl font-bold text-white leading-tight">
+            <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
               Bagikan resepmu dengan mudah
             </h1>
-            <p className="text-lg text-gray-400 max-w-xl">
+            <p className="text-lg text-gray-600 max-w-xl">
               Berbagi resep favoritmu dengan komunitas Cookpad sangat mudah. 
               Unggah foto, tulis langkah-langkah memasak, dan bagikan tips terbaikmu.
             </p>
-            <p className="text-lg text-gray-400">
+            <p className="text-lg text-gray-600">
               Jadilah bagian dari komunitas memasak terbesar di Indonesia!
             </p>
             <div className="pt-4">
               <a 
                 href="#" 
-                className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors text-lg"
+                className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors text-lg"
               >
                 Mulai berbagi resep <ArrowRight className="w-5 h-5" />
               </a>

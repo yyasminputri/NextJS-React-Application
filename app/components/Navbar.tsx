@@ -10,8 +10,6 @@ export const Navbar = () => {
     { name: "📂 Categories", href: "/categories" },
     { name: "❤️ Favorites", href: "/favorites" },
     { name: "🍳 Add Recipe", href: "/add-recipe" },
-    { name: "📞 Contact", href: "/contact" },
-    { name: "⭐️ Review", href: "/review" },
     { name: "👤 Admin", href: "/admin" },
     ];
 

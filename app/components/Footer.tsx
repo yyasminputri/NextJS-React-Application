@@ -5,17 +5,14 @@ import { Container } from "@/components/Container";
 
 export function Footer() {
   const navigation = [
-    { name: "Product", href: "/product" },
-    { name: "Features", href: "/features" },
-    { name: "Pricing", href: "/pricing" },
+    { name: "Product", href: "/categories" },
     { name: "Company", href: "/company" },
     { name: "Blog", href: "/blog" }
   ];
   
   const legal = [
-    { name: "Terms", href: "/legal/terms" },
-    { name: "Privacy", href: "/legal/privacy" },
-    { name: "Legal", href: "/legal/info" }
+    { name: "Review", href: "/review" },
+    { name: "Contact", href: "/contact" },
   ];
 
   return (

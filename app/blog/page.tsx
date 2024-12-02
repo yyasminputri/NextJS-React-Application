@@ -1,3 +1,4 @@
+//blog/page.tsx
 "use client";
 
 import { useState } from 'react';
@@ -60,7 +61,7 @@ const BlogPage = () => {
       id: 1,
       title: "Pin Resep Favoritmu dengan Fitur 'Masak Hari Ini' di Cookpad!",
       excerpt: "Pernah bingung memilih resep untuk dimasak hari ini atau ingin membandingkan beberapa resep sebelum memutuskan?",
-      image: "/cooking1.jpg",
+      image: "/img/image.png",
       author: "MAMAH COOKPAD",
       date: "30 NOV 2024",
       readTime: "2 MENIT"
@@ -69,7 +70,7 @@ const BlogPage = () => {
       id: 2,
       title: "Masak Tanpa Gangguan dengan Resep yang tak pernah padam",
       excerpt: "Kamu pernah nggak sih, sedang asyik memasak dengan resep yang terbuka di layar HP, tiba-tiba layar mati...",
-      image: "/cooking2.jpg",
+      image: "/img/2.png",
       author: "MAMAH COOKPAD",
       date: "30 NOV 2024",
       readTime: "3 MENIT"
@@ -78,16 +79,16 @@ const BlogPage = () => {
       id: 3,
       title: "Jelajahi Kuliner Dunia di Cookpad",
       excerpt: "Pernahkah kamu membayangkan bisa menjelajahi rasa dan aroma dari berbagai belahan dunia tanpa harus meninggalkan dapur?",
-      image: "/cooking3.jpg",
+      image: "/img/3.png",
       author: "MAMAH COOKPAD",
       date: "7 NOV 2024",
       readTime: "3 MENIT"
     },
     {
       id: 4,
-      title: "Navigasi Fitur Baru Cookpad dengan Mudah",
-      excerpt: "Pembaruan aplikasi Cookpad menghadirkan banyak fitur baru yang akan mempermudah pengalaman memasakmu sehari-hari bersama Cookpad!",
-      image: "/cooking4.jpg",
+      title: "Navigasi Fitur Baru Powerpuff dengan Mudah",
+      excerpt: "Pembaruan aplikasi Powerpuff menghadirkan banyak fitur baru yang akan mempermudah pengalaman memasakmu sehari-hari bersama Powerpuff!",
+      image: "/img/pp.png",
       author: "MAMAH COOKPAD",
       date: "16 OKT 2024",
       readTime: "3 MENIT"
@@ -96,7 +97,7 @@ const BlogPage = () => {
       id: 5,
       title: "Kacang Kaya Rasa: Serba Bisa di Dapur!",
       excerpt: "Kacang-kacangan adalah bahan serbaguna yang bisa ditemukan di banyak dapur. Selain sebagai camilan yang lezat...",
-      image: "/cooking5.jpg",
+      image: "/img/5.png",
       author: "MAMAH COOKPAD",
       date: "25 SEP 2024",
       readTime: "3 MENIT"
@@ -105,7 +106,7 @@ const BlogPage = () => {
       id: 6,
       title: "Tips Menyimpan Bumbu Dapur Agar Tetap Segar",
       excerpt: "Bumbu dapur adalah kunci masakan lezat. Mari pelajari cara menyimpan bumbu dengan benar agar tetap segar dan aromanya terjaga.",
-      image: "/cooking6.jpg",
+      image: "/img/4.png",
       author: "MAMAH COOKPAD",
       date: "20 SEP 2024",
       readTime: "3 MENIT"
