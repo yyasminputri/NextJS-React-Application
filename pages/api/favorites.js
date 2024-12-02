@@ -8,7 +8,7 @@ export default function handler(req, res) {
         name: "Spaghetti Carbonara",
         description: "A classic Italian pasta dish made with eggs, cheese, pancetta, and pepper.",
         category: "Italian",
-        logo: "/img/recipes/spaghetti-carbonara.jpg",
+        logo: "/img/recipes/carbonara.png",
         year: 2021,
       },
       {
@@ -16,7 +16,7 @@ export default function handler(req, res) {
         name: "Chicken Tikka Masala",
         description: "A popular Indian curry dish made with marinated chicken in a spiced tomato sauce.",
         category: "Indian",
-        logo: "/img/recipes/chicken-tikka-masala.jpg",
+        logo: "/img/recipes/sushi.png",
         year: 2020,
       },
       {
@@ -24,7 +24,7 @@ export default function handler(req, res) {
         name: "Sushi",
         description: "A traditional Japanese dish made with vinegared rice, raw fish, and vegetables.",
         category: "Japanese",
-        logo: "/img/recipes/sushi.jpg",
+        logo: "/img/recipes/sushi.png",
         year: 2019,
       },
       {
@@ -32,7 +32,7 @@ export default function handler(req, res) {
         name: "Tacos",
         description: "A traditional Mexican dish made with folded or rolled tortillas filled with various ingredients.",
         category: "Mexican",
-        logo: "/img/recipes/tacos.jpg",
+        logo: "/img/recipes/cocktail.png",
         year: 2022,
       },
       {
@@ -40,7 +40,7 @@ export default function handler(req, res) {
         name: "Pad Thai",
         description: "A stir-fried rice noodle dish commonly served as street food in Thailand.",
         category: "Thai",
-        logo: "/img/recipes/pad-thai.jpg",
+        logo: "/img/recipes/pudding.png",
         year: 2021,
       },
     ];

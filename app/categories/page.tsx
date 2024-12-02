@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Container } from "@/components/container";
 import Image from "next/image";
 
@@ -20,7 +20,7 @@ export default function Categories() {
       logo: "/img/recipes/carbonara.png",
       year: "30 mins",
       category: "Main Dishes",
-      description: "Classic Italian pasta dish with creamy sauce and crispy bacon"
+      description: "Classic Italian pasta dish with creamy sauce and crispy bacon",
     },
     {
       id: 2,
@@ -28,7 +28,7 @@ export default function Categories() {
       logo: "/img/recipes/sushi.png",
       year: "45 mins",
       category: "Main Dishes",
-      description: "Japanese-style sushi roll with avocado and tempura shrimp"
+      description: "Japanese-style sushi roll with avocado and tempura shrimp",
     },
     {
       id: 3,
@@ -36,7 +36,7 @@ export default function Categories() {
       logo: "/img/recipes/pudding.png",
       year: "20 mins",
       category: "Desserts",
-      description: "Rich and creamy homemade chocolate pudding"
+      description: "Rich and creamy homemade chocolate pudding",
     },
     {
       id: 4,
@@ -44,7 +44,7 @@ export default function Categories() {
       logo: "/img/recipes/icecream.png",
       year: "4 hours",
       category: "Desserts",
-      description: "Smooth and creamy vanilla ice cream with real vanilla beans"
+      description: "Smooth and creamy vanilla ice cream with real vanilla beans",
     },
     {
       id: 5,
@@ -52,26 +52,46 @@ export default function Categories() {
       logo: "/img/recipes/cocktail.png",
       year: "5 mins",
       category: "Beverages",
-      description: "Refreshing mint and lime cocktail with white rum"
-    }
+      description: "Refreshing mint and lime cocktail with white rum",
+    },
   ];
 
   const [searchQuery, setSearchQuery] = useState("");
+  const [favorites, setFavorites] = useState([]);
 
   const handleCategoryToggle = (categoryId) => {
-    setCategories(categories.map(cat => 
-      cat.id === categoryId ? { ...cat, checked: !cat.checked } : cat
-    ));
+    setCategories(
+      categories.map((cat) =>
+        cat.id === categoryId ? { ...cat, checked: !cat.checked } : cat
+      )
+    );
   };
 
-  const filteredRecipes = allRecipes.filter(recipe => {
-    const matchesSearch = recipe.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         recipe.description.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    const selectedCategories = categories.filter(cat => cat.checked).map(cat => cat.name);
-    
-    const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(recipe.category);
-    
+  const toggleFavorite = (recipe) => {
+    const updatedFavorites = favorites.some((fav) => fav.id === recipe.id)
+      ? favorites.filter((fav) => fav.id !== recipe.id)
+      : [...favorites, recipe];
+    setFavorites(updatedFavorites);
+    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+  };
+
+  useEffect(() => {
+    const savedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    setFavorites(savedFavorites);
+  }, []);
+
+  const filteredRecipes = allRecipes.filter((recipe) => {
+    const matchesSearch =
+      recipe.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      recipe.description.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const selectedCategories = categories
+      .filter((cat) => cat.checked)
+      .map((cat) => cat.name);
+
+    const matchesCategory =
+      selectedCategories.length === 0 || selectedCategories.includes(recipe.category);
+
     return matchesSearch && matchesCategory;
   });
 
@@ -82,7 +102,7 @@ export default function Categories() {
           {/* Sidebar */}
           <div className="w-full md:w-1/4">
             <h2 className="text-2xl font-bold mb-6">Categories</h2>
-            
+
             {/* Search Bar */}
             <div className="relative mb-6">
               <input
@@ -92,15 +112,16 @@ export default function Categories() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
-              <span className="absolute left-3 top-2.5 text-gray-400">
-                🔍
-              </span>
+              <span className="absolute left-3 top-2.5 text-gray-400">🔍</span>
             </div>
 
             {/* Category Filters */}
             <div className="space-y-3 mb-8">
               {categories.map((category) => (
-                <label key={category.id} className="flex items-center space-x-3 cursor-pointer">
+                <label
+                  key={category.id}
+                  className="flex items-center space-x-3 cursor-pointer"
+                >
                   <input
                     type="checkbox"
                     checked={category.checked}
@@ -121,14 +142,16 @@ export default function Categories() {
                 Showing {filteredRecipes.length} results
               </span>
             </div>
-            
+
             {/* Recipe Cards */}
             <div className="space-y-4">
               {filteredRecipes.map((recipe) => (
-                <div key={recipe.id} 
-                     className="bg-[#1e2538] rounded-xl p-6 hover:bg-[#252a3d] transition-all duration-200">
+                <div
+                  key={recipe.id}
+                  className="bg-[#1e2538] rounded-xl p-6 hover:bg-[#252a3d] transition-all duration-200"
+                >
                   <div className="flex items-start gap-6">
-                    {/* Logo - Increased size */}
+                    {/* Logo */}
                     <div className="w-32 h-32 relative flex-shrink-0">
                       <Image
                         src={recipe.logo}
@@ -149,6 +172,16 @@ export default function Categories() {
                         <span className="text-sm px-3 py-1 bg-[#2d3346] text-indigo-300 rounded">
                           {recipe.category}
                         </span>
+                        <button
+                          className={`ml-auto text-lg ${
+                            favorites.some((fav) => fav.id === recipe.id)
+                              ? "text-yellow-400"
+                              : "text-gray-400"
+                          }`}
+                          onClick={() => toggleFavorite(recipe)}
+                        >
+                          ★
+                        </button>
                       </div>
                       <p className="text-gray-400">{recipe.description}</p>
                     </div>
