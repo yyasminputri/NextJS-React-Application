@@ -33,7 +33,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-  ],
+, "pages/api/contacts/index.js", "pages/api/contacts/[id].js"  ],
   "exclude": [
     "node_modules"
   ]

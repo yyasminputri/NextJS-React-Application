@@ -4,7 +4,7 @@ const { Sequelize, DataTypes } = require('sequelize');
 
 const sequelize = new Sequelize("resep_makanan", "root", "", {
   host: "localhost",
-  port: 3308,
+  port: 3306,
   dialect: "mysql",
 });
 
@@ -74,6 +74,23 @@ const User = sequelize.define("User", {
     },
   });
 
+  // Definisi Model Contact
+const Contact = sequelize.define('Contact', {
+  nama: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  messages: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+  }
+});
+
 // Relasi antar model
 // Relasi antar model
 Category.hasMany(Recipe, { 
@@ -87,4 +104,4 @@ Recipe.belongsTo(Category, {
 });
 
 
-module.exports = { sequelize, Category, Recipe, Review, User };
+module.exports = { sequelize, Category, Recipe, Review, User, Contact };

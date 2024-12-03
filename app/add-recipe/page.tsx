@@ -185,6 +185,30 @@ export default function Recipes() {
             </div>
           </form>
         </div>
+
+        {/* Display added recipes below */}
+        <div className="mt-12">
+          <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">Recipes</h2>
+          {recipes.length > 0 ? (
+            <div className="space-y-6 mt-6">
+              {recipes.map((recipe) => (
+                <div key={recipe.id} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                  <h3 className="text-xl font-semibold text-gray-800 dark:text-white">{recipe.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-400 mt-2">{recipe.description}</p>
+                  <div className="mt-4">
+                    <img src={recipe.image_url} alt={recipe.title} className="w-full h-64 object-cover rounded-lg" />
+                  </div>
+                  <div className="mt-4">
+                    <p className="text-gray-800 dark:text-white">Ingredients: {recipe.ingredients}</p>
+                    <p className="text-gray-800 dark:text-white">Instructions: {recipe.instructions}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-500 dark:text-gray-300">No recipes added yet.</p>
+          )}
+        </div>
       </Container>
     </>
   );
