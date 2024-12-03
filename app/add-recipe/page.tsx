@@ -1,83 +1,91 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
 import { Container } from "@/components/Container";
 
-export default function AddRecipe() {
-  const [name, setName] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [ingredients, setIngredients] = useState<string[]>([]);
-  const [steps, setSteps] = useState<string[]>([]);
-  const [image, setImage] = useState<string>("");
-  const [message, setMessage] = useState<string>("");
+export default function Recipes() {
+  const [recipes, setRecipes] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>([]);  // State for categories
+  const [newRecipe, setNewRecipe] = useState({
+    title: "",
+    ingredients: "",
+    description: "",
+    instructions: "",
+    image_url: "",
+    category_id: "",  // Category ID for the dropdown
+  });
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post("/api/recipes", {
-        name,
-        description,
-        ingredients,
-        steps,
-        image,
-      });
-      setMessage("Recipe added successfully!");
-      setName("");
-      setDescription("");
-      setIngredients([]);
-      setSteps([]);
-      setImage("");
-    } catch (error: any) {
-      setMessage("Failed to add recipe.");
-    }
-  };
+  useEffect(() => {
+    // Fetch recipes when component mounts
+    const fetchRecipes = async () => {
+      const response = await axios.get("/api/recipes");
+      setRecipes(response.data);
+    };
 
-  const handleArrayChange = (
-    index: number,
-    value: string,
-    setArray: React.Dispatch<React.SetStateAction<string[]>>
-  ) => {
-    setArray((prev) => {
-      const updated = [...prev];
-      updated[index] = value;
-      return updated;
+    // Fetch categories
+    const fetchCategories = async () => {
+      const response = await axios.get("/api/categories"); // Make sure the API endpoint exists
+      setCategories(response.data);
+    };
+
+    fetchRecipes();
+    fetchCategories();
+  }, []);
+
+  // Handle changes in form input fields
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setNewRecipe({
+      ...newRecipe,
+      [name]: value,
     });
   };
 
-  const addToArray = (setArray: React.Dispatch<React.SetStateAction<string[]>>) => {
-    setArray((prev) => [...prev, ""]);
+  // Handle form submission to add new recipe
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post("/api/recipes", newRecipe);
+      setRecipes([...recipes, response.data]);  // Update state with new recipe
+      setNewRecipe({
+        title: "",
+        ingredients: "",
+        description: "",
+        instructions: "",
+        image_url: "",
+        category_id: "",  // Reset category_id after submission
+      });  // Reset form after submission
+    } catch (error) {
+      console.error("Failed to add recipe:", error);
+    }
   };
 
   return (
     <>
-      
       <Container>
         <div className="text-center my-12">
           <h1 className="text-5xl font-bold text-gray-800 dark:text-white">
             Add a New Recipe
           </h1>
-          {message && (
-            <p className="mt-4 text-center text-red-500">{message}</p>
-          )}
         </div>
 
         <div className="max-w-3xl mx-auto bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg">
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label
-                htmlFor="name"
+                htmlFor="title"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
-                Name
+                Title
               </label>
               <input
-                id="name"
+                id="title"
                 type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={newRecipe.title}
+                onChange={handleChange}
+                name="title"
                 required
                 className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               />
@@ -92,8 +100,9 @@ export default function AddRecipe() {
               </label>
               <textarea
                 id="description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                value={newRecipe.description}
+                onChange={handleChange}
+                name="description"
                 required
                 className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               />
@@ -103,64 +112,67 @@ export default function AddRecipe() {
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Ingredients
               </label>
-              {ingredients.map((ingredient, index) => (
-                <input
-                  key={index}
-                  type="text"
-                  value={ingredient}
-                  onChange={(e) =>
-                    handleArrayChange(index, e.target.value, setIngredients)
-                  }
-                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                  placeholder={`Ingredient ${index + 1}`}
-                />
-              ))}
-              <button
-                type="button"
-                onClick={() => addToArray(setIngredients)}
-                className="mt-2 w-full rounded-md bg-indigo-600 py-1 px-2 text-white hover:bg-indigo-700"
-              >
-                Add Ingredient
-              </button>
+              <textarea
+                value={newRecipe.ingredients}
+                onChange={handleChange}
+                name="ingredients"
+                required
+                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                placeholder="Enter ingredients"
+              />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Steps
+                Instructions
               </label>
-              {steps.map((step, index) => (
-                <textarea
-                  key={index}
-                  value={step}
-                  onChange={(e) => handleArrayChange(index, e.target.value, setSteps)}
-                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                  placeholder={`Step ${index + 1}`}
-                />
-              ))}
-              <button
-                type="button"
-                onClick={() => addToArray(setSteps)}
-                className="mt-2 w-full rounded-md bg-indigo-600 py-1 px-2 text-white hover:bg-indigo-700"
-              >
-                Add Step
-              </button>
+              <textarea
+                value={newRecipe.instructions}
+                onChange={handleChange}
+                name="instructions"
+                required
+                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                placeholder="Enter instructions"
+              />
             </div>
 
             <div>
               <label
-                htmlFor="image"
+                htmlFor="image_url"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 Image URL
               </label>
               <input
-                id="image"
+                id="image_url"
                 type="text"
-                value={image}
-                onChange={(e) => setImage(e.target.value)}
-                required
+                value={newRecipe.image_url}
+                onChange={handleChange}
+                name="image_url"
                 className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                placeholder="Enter image URL"
               />
+            </div>
+
+            {/* Category dropdown */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Category
+              </label>
+              <select
+                name="category_id"
+                value={newRecipe.category_id}
+                onChange={handleChange}
+                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                required
+              >
+                <option value="" disabled>Select a category</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div>
