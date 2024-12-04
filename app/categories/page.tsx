@@ -3,15 +3,19 @@
 import { useState, useEffect } from "react";
 import { Container } from "@/components/container";
 import Image from "next/image";
+import axios from "axios";
 
 export default function Categories() {
   const [categories, setCategories] = useState([
-    { id: 1, name: "Main Dishes", checked: false },
-    { id: 2, name: "Desserts", checked: false },
-    { id: 3, name: "Appetizers", checked: false },
-    { id: 4, name: "Beverages", checked: false },
-    { id: 5, name: "Snacks", checked: false },
+    { id: 101, name: "Main Dishes", checked: false },
+    { id: 102, name: "Desserts", checked: false },
+    { id: 103, name: "Appetizers", checked: false },
+    { id: 104, name: "Beverages", checked: false },
+    { id: 105, name: "Snacks", checked: false },
   ]);
+  const [apiCategories, setApiCategories] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [favorites, setFavorites] = useState([]);
 
   const allRecipes = [
     {
@@ -56,12 +60,37 @@ export default function Categories() {
     },
   ];
 
-  const [searchQuery, setSearchQuery] = useState("");
-  const [favorites, setFavorites] = useState([]);
+  useEffect(() => {
+    const fetchApiCategories = async () => {
+      try {
+        const res = await axios.get("/api/categories");
+        const fetchedCategories = res.data.map((cat, index) => ({
+          id: cat.id || 1000 + index, 
+          name: cat.name,
+          checked: false,
+        }));
+        setApiCategories(fetchedCategories);
+      } catch (error) {
+        console.error("Failed to fetch categories:", error);
+      }
+    };
+
+    fetchApiCategories();
+  }, []);
+
+  useEffect(() => {
+    const mergedCategories = [
+      ...categories,
+      ...apiCategories.filter(
+        (apiCat) => !categories.some((cat) => cat.name === apiCat.name)
+      ),
+    ];
+    setCategories(mergedCategories);
+  }, [apiCategories]);
 
   const handleCategoryToggle = (categoryId) => {
-    setCategories(
-      categories.map((cat) =>
+    setCategories((prevCategories) =>
+      prevCategories.map((cat) =>
         cat.id === categoryId ? { ...cat, checked: !cat.checked } : cat
       )
     );
