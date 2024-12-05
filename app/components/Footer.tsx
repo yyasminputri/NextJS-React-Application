@@ -13,6 +13,8 @@ export function Footer() {
   const legal = [
     { name: "Review", href: "/review" },
     { name: "Contact", href: "/contact" },
+    { name: "Membership", href: "/membership" },
+    { name: "Payment", href: "/payment" },
   ];
 
   return (
@@ -106,9 +108,8 @@ export function Footer() {
         </div>
 
         <div className="my-10 text-sm text-center text-gray-600 dark:text-gray-400">
-          Copyright © {new Date().getFullYear()}. Made with ♥ by{" "}
+          Copyright © {new Date().getFullYear()}. Made with ♥ {" "}
           <a href="https://web3templates.com/" target="_blank" rel="noopener">
-            Furstin Nabhyla Yasmin
           </a>
         </div>
       </Container>
