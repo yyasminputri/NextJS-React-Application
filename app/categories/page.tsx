@@ -1,72 +1,69 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { Container } from "@/components/container";
 import Image from "next/image";
-import axios from "axios";
 
 export default function Categories() {
-  const [categories, setCategories] = useState([
+  const [categories, setCategories] = useState<any[]>([
     { id: 101, name: "Main Dishes", checked: false },
     { id: 102, name: "Desserts", checked: false },
     { id: 103, name: "Appetizers", checked: false },
     { id: 104, name: "Beverages", checked: false },
     { id: 105, name: "Snacks", checked: false },
   ]);
-  const [apiCategories, setApiCategories] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [favorites, setFavorites] = useState([]);
 
-  const allRecipes = [
+  const [apiCategories, setApiCategories] = useState<any[]>([]);
+  const [allRecipes, setAllRecipes] = useState<any[]>([
     {
-      id: 1,
+      id: 101,
       name: "Creamy Carbonara",
-      logo: "/img/recipes/carbonara.png",
-      year: "30 mins",
+      image: "/img/recipes/carbonara.png",
       category: "Main Dishes",
       description: "Classic Italian pasta dish with creamy sauce and crispy bacon",
     },
     {
-      id: 2,
+      id: 102,
       name: "Dragon Roll Sushi",
-      logo: "/img/recipes/sushi.png",
-      year: "45 mins",
+      image: "/img/recipes/sushi.png",
       category: "Main Dishes",
       description: "Japanese-style sushi roll with avocado and tempura shrimp",
     },
     {
-      id: 3,
+      id: 103,
       name: "Chocolate Pudding",
-      logo: "/img/recipes/pudding.png",
-      year: "20 mins",
+      image: "/img/recipes/pudding.png",
       category: "Desserts",
       description: "Rich and creamy homemade chocolate pudding",
     },
     {
-      id: 4,
+      id: 104,
       name: "Vanilla Bean Ice Cream",
-      logo: "/img/recipes/icecream.png",
-      year: "4 hours",
+      image: "/img/recipes/icecream.png",
       category: "Desserts",
       description: "Smooth and creamy vanilla ice cream with real vanilla beans",
     },
     {
-      id: 5,
+      id: 105,
       name: "Mojito Cocktail",
-      logo: "/img/recipes/cocktail.png",
-      year: "5 mins",
+      image: "/img/recipes/cocktail.png",
       category: "Beverages",
       description: "Refreshing mint and lime cocktail with white rum",
     },
-  ];
+  ]);
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [favorites, setFavorites] = useState<any[]>([]);
+
+  // Fetch categories from API
   useEffect(() => {
     const fetchApiCategories = async () => {
       try {
-        const res = await axios.get("/api/categories");
-        const fetchedCategories = res.data.map((cat, index) => ({
-          id: cat.id || 1000 + index, 
-          name: cat.name,
+        const response = await axios.get("/api/categories");
+        const fetchedCategories = response.data.map((category, index) => ({
+          id: category.id || `api-${index}`,
+          name: category.name || `Category ${index + 1}`,
           checked: false,
         }));
         setApiCategories(fetchedCategories);
@@ -78,17 +75,42 @@ export default function Categories() {
     fetchApiCategories();
   }, []);
 
+  // Merge categories from API with local dummy categories
   useEffect(() => {
     const mergedCategories = [
       ...categories,
       ...apiCategories.filter(
-        (apiCat) => !categories.some((cat) => cat.name === apiCat.name)
+        (apiCategory) => !categories.some((cat) => cat.name === apiCategory.name)
       ),
     ];
     setCategories(mergedCategories);
   }, [apiCategories]);
 
-  const handleCategoryToggle = (categoryId) => {
+  // Fetch recipes from API and merge with dummy recipes
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      try {
+        const response = await axios.get("/api/recipes");
+        const fetchedRecipes = response.data.map((recipe) => ({
+          id: recipe.id,
+          name: recipe.title || "Unnamed Recipe",
+          image: recipe.image_url || "/img/default.png",
+          category:
+            typeof recipe.category === "object"
+              ? recipe.category.name
+              : recipe.category || "Uncategorized",
+          description: recipe.description || "No description provided.",
+        }));
+        setAllRecipes((prevRecipes) => [...prevRecipes, ...fetchedRecipes]);
+      } catch (error) {
+        console.error("Failed to fetch recipes:", error);
+      }
+    };
+
+    fetchRecipes();
+  }, []);
+
+  const handleCategoryToggle = (categoryId: number | string) => {
     setCategories((prevCategories) =>
       prevCategories.map((cat) =>
         cat.id === categoryId ? { ...cat, checked: !cat.checked } : cat
@@ -96,7 +118,7 @@ export default function Categories() {
     );
   };
 
-  const toggleFavorite = (recipe) => {
+  const toggleFavorite = (recipe: any) => {
     const updatedFavorites = favorites.some((fav) => fav.id === recipe.id)
       ? favorites.filter((fav) => fav.id !== recipe.id)
       : [...favorites, recipe];
@@ -105,11 +127,15 @@ export default function Categories() {
   };
 
   useEffect(() => {
-    const savedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    const savedFavorites = JSON.parse(localStorage.getItem("favorites") || "[]");
     setFavorites(savedFavorites);
   }, []);
 
   const filteredRecipes = allRecipes.filter((recipe) => {
+    if (!recipe || !recipe.name || !recipe.description) {
+      return false;
+    }
+
     const matchesSearch =
       recipe.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       recipe.description.toLowerCase().includes(searchQuery.toLowerCase());
@@ -180,10 +206,10 @@ export default function Categories() {
                   className="bg-[#1e2538] rounded-xl p-6 hover:bg-[#252a3d] transition-all duration-200"
                 >
                   <div className="flex items-start gap-6">
-                    {/* Logo */}
+                    {/* Image */}
                     <div className="w-32 h-32 relative flex-shrink-0">
                       <Image
-                        src={recipe.logo}
+                        src={recipe.image}
                         alt={recipe.name}
                         layout="fill"
                         objectFit="cover"
@@ -195,9 +221,6 @@ export default function Categories() {
                     <div className="flex-grow">
                       <div className="flex flex-wrap items-center gap-3 mb-2">
                         <h3 className="text-xl font-bold">{recipe.name}</h3>
-                        <span className="text-gray-400 text-sm px-2 py-1 bg-[#2a2f3d] rounded">
-                          {recipe.year}
-                        </span>
                         <span className="text-sm px-3 py-1 bg-[#2d3346] text-indigo-300 rounded">
                           {recipe.category}
                         </span>
@@ -229,4 +252,4 @@ export default function Categories() {
       </Container>
     </div>
   );
-}
+} 

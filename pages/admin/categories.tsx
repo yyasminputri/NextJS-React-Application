@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import Sidebar from '../../components/Sidebar';
-import { Plus, Loader2, Pencil, Trash2 } from 'lucide-react';
+import Sidebar from '../../components/Sidebar'
+import { Plus, Loader2, Pencil, Trash2, Home, Users, BarChart3, FolderOpen, Book } from 'lucide-react';
 
 const Categories = () => {
   const [categories, setCategories] = useState<any[]>([]);
@@ -17,10 +17,10 @@ const Categories = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('/api/categories');
-      setCategories(response.data);
-    } catch (err) {
-      console.error('Error fetching categories:', err);
+      const res = await axios.get('/api/categories');
+      setCategories(res.data);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
     }
   };
 
@@ -28,60 +28,60 @@ const Categories = () => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
-
-    if (!newCategoryName.trim()) {
-      setError('Category name cannot be empty');
-      setIsLoading(false);
-      return;
-    }
-
+    
     try {
-      await axios.post(
-        '/api/categories',
-        { name: newCategoryName.trim() },
-        { headers: { 'Content-Type': 'application/json' } }
-      );
+      if (!newCategoryName.trim()) {
+        setError('Category name cannot be empty');
+        return;
+      }
+
+      await axios.post('/api/categories', {
+        name: newCategoryName.trim()
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
       setNewCategoryName('');
       setShowAddModal(false);
       await fetchCategories();
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to add category');
+    } catch (error: any) {
+      setError(error.response?.data?.message || 'Failed to add category');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleDeleteCategory = async (id: number) => {
-    if (!window.confirm('Are you sure you want to delete this category?')) return;
-
-    try {
-      await axios.delete(`/api/categories?id=${id}`);
-      await fetchCategories();
-    } catch (err) {
-      console.error('Error deleting category:', err);
+  const handleDelete = async (id: number) => {
+    if (window.confirm('Are you sure you want to delete this category?')) {
+      try {
+        await axios.delete(`/api/categories?id=${id}`);
+        await fetchCategories();
+      } catch (error) {
+        console.error('Error deleting category:', error);
+      }
     }
   };
 
-  const handleUpdateCategory = async (e: React.FormEvent) => {
+  const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editCategory) return;
 
-    if (!editCategory.name.trim()) {
-      setError('Category name cannot be empty');
-      return;
-    }
-
     setIsLoading(true);
     try {
-      await axios.put(
-        `/api/categories?id=${editCategory.id}`,
-        { name: editCategory.name.trim() },
-        { headers: { 'Content-Type': 'application/json' } }
-      );
+      await axios.put(`/api/categories?id=${editCategory.id}`, {
+        name: editCategory.name.trim()
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
       setEditCategory(null);
       await fetchCategories();
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to update category');
+    } catch (error: any) {
+      setError(error.response?.data?.message || 'Failed to update category');
     } finally {
       setIsLoading(false);
     }
@@ -89,127 +89,171 @@ const Categories = () => {
 
   return (
     <div className="flex min-h-screen bg-[#F8F9FF]">
-      <Sidebar />
-      <div className="flex-1 p-8">
-        {/* Header */}
-        <div className="max-w-7xl mx-auto bg-white rounded-xl shadow-sm mb-6 p-6">
-          <div className="flex justify-between items-center">
-            <h1 className="text-3xl font-bold text-indigo-600">Categories</h1>
-            <button
-              onClick={() => setShowAddModal(true)}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center"
-            >
-              <Plus size={20} className="mr-2" />
-              Add Category
-            </button>
+    {/* Sidebar */}
+    <Sidebar />
+
+    {/* Main Content */}
+    <div className="flex-1 p-8">
+      {/* Header Card */}
+      <div className="max-w-7xl mx-auto bg-white rounded-xl shadow-sm mb-6 p-6">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+              Categories
+            </h1>
+            <p className="text-gray-500 mt-1">Manage your categories</p>
           </div>
+          <button
+            onClick={() => setShowAddModal(true)}
+            className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white px-6 py-3 rounded-xl transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+          >
+            <Plus size={20} />
+            Add Category
+          </button>
         </div>
-
-        {/* Categories Table */}
-        <div className="max-w-7xl mx-auto bg-white rounded-xl shadow-sm">
-          <table className="w-full border-collapse">
-            <thead>
-              <tr>
-                <th className="text-left p-4">ID</th>
-                <th className="text-left p-4">Name</th>
-                <th className="text-left p-4">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {categories.map((category) => (
-                <tr key={category.id} className="hover:bg-gray-100">
-                  <td className="p-4">{category.id}</td>
-                  <td className="p-4">{category.name}</td>
-                  <td className="p-4">
-                    <button
-                      onClick={() => setEditCategory({ id: category.id, name: category.name })}
-                      className="text-blue-500 hover:underline"
-                    >
-                      <Pencil size={16} />
-                    </button>
-                    <button
-                      onClick={() => handleDeleteCategory(category.id)}
-                      className="text-red-500 hover:underline ml-4"
-                    >
-                      <Trash2 size={16} />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Add Modal */}
-        {showAddModal && (
-          <div className="fixed inset-0 bg-black/50 flex justify-center items-center">
-            <div className="bg-white p-6 rounded-lg">
-              <h2 className="text-xl font-bold mb-4">Add New Category</h2>
-              <form onSubmit={handleAddCategory}>
-                <input
-                  type="text"
-                  value={newCategoryName}
-                  onChange={(e) => setNewCategoryName(e.target.value)}
-                  placeholder="Category Name"
-                  className="w-full p-2 border rounded mb-4"
-                />
-                {error && <p className="text-red-500 mb-4">{error}</p>}
-                <div className="flex justify-end">
-                  <button
-                    onClick={() => setShowAddModal(false)}
-                    type="button"
-                    className="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded mr-2"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-                  >
-                    {isLoading ? 'Saving...' : 'Save'}
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
-
-        {/* Edit Modal */}
-        {editCategory && (
-          <div className="fixed inset-0 bg-black/50 flex justify-center items-center">
-            <div className="bg-white p-6 rounded-lg">
-              <h2 className="text-xl font-bold mb-4">Edit Category</h2>
-              <form onSubmit={handleUpdateCategory}>
-                <input
-                  type="text"
-                  value={editCategory.name}
-                  onChange={(e) =>
-                    setEditCategory((prev) => (prev ? { ...prev, name: e.target.value } : null))
-                  }
-                  placeholder="Category Name"
-                  className="w-full p-2 border rounded mb-4"
-                />
-                {error && <p className="text-red-500 mb-4">{error}</p>}
-                <div className="flex justify-end">
-                  <button
-                    onClick={() => setEditCategory(null)}
-                    type="button"
-                    className="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded mr-2"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-                  >
-                    {isLoading ? 'Saving...' : 'Save'}
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
       </div>
+
+      {/* Table Card */}
+              <div className="max-w-7xl mx-auto bg-white rounded-xl shadow-sm">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-gray-200">
+                  <th className="text-left p-6 text-sm font-semibold text-gray-600">ID</th>
+                  <th className="text-left p-6 text-sm font-semibold text-gray-600">Name</th>
+                  <th className="text-left p-6 text-sm font-semibold text-gray-600">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {categories.map((category) => (
+                  <tr key={category.id} className="border-b border-gray-200 hover:bg-gray-50">
+                    <td className="p-6 text-sm text-gray-600">{category.id}</td>
+                    <td className="p-6 text-sm text-gray-600">{category.name}</td>
+                    <td className="p-6">
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => setEditCategory({ id: category.id, name: category.name })}
+                          className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                        >
+                          <Pencil size={16} />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(category.id)}
+                          className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+
+      {/* Edit Category Modal */}
+      {editCategory && (
+        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center">
+          <div className="bg-white rounded-xl shadow-lg w-full max-w-md m-4">
+            <div className="p-6">
+              <h2 className="text-xl font-bold text-gray-900 mb-4">
+                Edit Category
+              </h2>
+              <form onSubmit={handleUpdate}>
+                <div className="space-y-4">
+                  <input
+                    type="text"
+                    value={editCategory.name}
+                    onChange={(e) => setEditCategory({ ...editCategory, name: e.target.value })}
+                    placeholder="Category Name"
+                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                  />
+                  {error && (
+                    <p className="text-red-500 text-sm">{error}</p>
+                  )}
+                </div>
+                <div className="flex justify-end gap-3 mt-6">
+                  <button
+                    type="button"
+                    onClick={() => setEditCategory(null)}
+                    className="px-4 py-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="px-4 py-2 bg-[#4F46E5] hover:bg-[#4338CA] text-white rounded-lg transition-colors flex items-center gap-2"
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        Saving...
+                      </>
+                    ) : (
+                      'Save Changes'
+                    )}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+
+      {/* Add Category Modal */}
+      {showAddModal && (
+        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center">
+          <div className="bg-white rounded-xl shadow-lg w-full max-w-md m-4">
+            <div className="p-6">
+              <h2 className="text-xl font-bold text-gray-900 mb-4">
+                Add New Category
+              </h2>
+              <form onSubmit={handleAddCategory}>
+                <div className="space-y-4">
+                  <input
+                    type="text"
+                    value={newCategoryName}
+                    onChange={(e) => setNewCategoryName(e.target.value)}
+                    placeholder="Category Name"
+                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                  />
+                  {error && (
+                    <p className="text-red-500 text-sm">{error}</p>
+                  )}
+                </div>
+                <div className="flex justify-end gap-3 mt-6">
+                  <button
+                    type="button"
+                    onClick={() => setShowAddModal(false)}
+                    className="px-4 py-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="px-4 py-2 bg-[#4F46E5] hover:bg-[#4338CA] text-white rounded-lg transition-colors flex items-center gap-2"
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        Saving...
+                      </>
+                    ) : (
+                      'Save'
+                    )}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
     </div>
   );
 };

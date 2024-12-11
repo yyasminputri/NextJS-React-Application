@@ -5,10 +5,10 @@ import { Container } from "@/components/container";
 import Image from "next/image";
 
 export default function Favorites() {
-  const [favorites, setFavorites] = useState([]);
+  const [favorites, setFavorites] = useState<any[]>([]);
 
   useEffect(() => {
-    const savedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    const savedFavorites = JSON.parse(localStorage.getItem("favorites") || "[]");
     setFavorites(savedFavorites);
   }, []);
 
@@ -25,26 +25,31 @@ export default function Favorites() {
                 className="bg-[#1e2538] rounded-xl p-6 hover:bg-[#252a3d] transition-all duration-200"
               >
                 <div className="flex items-start gap-6">
+                  {/* Gambar */}
                   <div className="w-32 h-32 relative flex-shrink-0">
                     <Image
-                      src={recipe.logo}
-                      alt={recipe.name}
+                      src={
+                        recipe.logo || 
+                        recipe.image || 
+                        recipe.image_url || 
+                        "/img/default.png" 
+                      }
+                      alt={recipe.name || "Unnamed Recipe"}
                       layout="fill"
                       objectFit="cover"
                       className="rounded-xl"
                     />
                   </div>
+
+                  {/* Info */}
                   <div className="flex-grow">
                     <div className="flex flex-wrap items-center gap-3 mb-2">
-                      <h3 className="text-xl font-bold">{recipe.name}</h3>
-                      <span className="text-gray-400 text-sm px-2 py-1 bg-[#2a2f3d] rounded">
-                        {recipe.year}
-                      </span>
+                      <h3 className="text-xl font-bold">{recipe.name || "Unnamed Recipe"}</h3>
                       <span className="text-sm px-3 py-1 bg-[#2d3346] text-indigo-300 rounded">
-                        {recipe.category}
+                        {recipe.category || "Uncategorized"}
                       </span>
                     </div>
-                    <p className="text-gray-400">{recipe.description}</p>
+                    <p className="text-gray-400">{recipe.description || "No description provided."}</p>
                   </div>
                 </div>
               </div>
