@@ -11,7 +11,15 @@ export const Navbar = () => {
     { name: "❤️ Favorites", href: "/favorites" },
     { name: "🍳 Add Recipe", href: "/add-recipe" },
     { name: "👤 Admin", href: "/admin" },
-    ];
+  ];
+
+  // Fungsi logout
+  const handleLogout = () => {
+    // Logika tambahan untuk logout, misalnya clear token atau session
+    console.log("User logged out!");
+    // Redirect ke halaman login
+    window.location.href = "/login";
+  };
 
   return (
     <div className="w-full font-poppins">
@@ -34,12 +42,12 @@ export const Navbar = () => {
         <div className="gap-3 nav__item mr-2 lg:flex ml-auto lg:ml-0 lg:order-2">
           <ThemeChanger />
           <div className="hidden mr-3 lg:flex nav__item">
-            <Link
-              href="/"
+            <button
+              onClick={handleLogout}
               className="px-6 py-2 text-white bg-indigo-600 rounded-md md:ml-5 hover:bg-indigo-500 transition-all"
             >
               Log Out
-            </Link>
+            </button>
           </div>
         </div>
 
@@ -84,12 +92,12 @@ export const Navbar = () => {
                     {item.name}
                   </Link>
                 ))}
-                <Link
-                  href="/logout"
+                <button
+                  onClick={handleLogout}
                   className="px-6 py-2 mt-2 text-center text-white bg-red-500 rounded-md hover:bg-red-400 transition-all"
                 >
                   Log Out
-                </Link>
+                </button>
               </DisclosurePanel>
             </>
           )}
