@@ -40,14 +40,14 @@ const CompanyPage = () => {
           {/* Left Content */}
           <div className="w-full lg:w-1/2 space-y-6">
             <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
-              Cari dan temukan resep dari komunitas Cookpad
+              Cari dan temukan resep dari komunitas Powerpuff
             </h1>
             <p className="text-lg text-gray-600 max-w-xl">
-              Melalui fitur pencarian di Cookpad, kamu dapat menemukan resep berdasarkan bahan atau nama hidangan,
+              Melalui fitur pencarian di Powerpuff, kamu dapat menemukan resep berdasarkan bahan atau nama hidangan,
               memastikan kamu selalu mendapat inspirasi masak setiap harinya.
             </p>
             <p className="text-lg text-gray-600">
-              Pengalaman ini bahkan lebih baik lagi dengan menggunakan aplikasi Cookpad secara gratis!
+              Pengalaman ini bahkan lebih baik lagi dengan menggunakan aplikasi Powerpuff secara gratis!
             </p>
             <div className="pt-4">
               <a 
@@ -100,7 +100,7 @@ const CompanyPage = () => {
               Bagikan resepmu dengan mudah
             </h1>
             <p className="text-lg text-gray-600 max-w-xl">
-              Berbagi resep favoritmu dengan komunitas Cookpad sangat mudah. 
+              Berbagi resep favoritmu dengan komunitas Powerpuff sangat mudah. 
               Unggah foto, tulis langkah-langkah memasak, dan bagikan tips terbaikmu.
             </p>
             <p className="text-lg text-gray-600">

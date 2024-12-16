@@ -10,14 +10,10 @@ export const Navbar = () => {
     { name: "📂 Categories", href: "/categories" },
     { name: "❤️ Favorites", href: "/favorites" },
     { name: "🍳 Add Recipe", href: "/add-recipe" },
-    { name: "👤 Admin", href: "/admin" },
   ];
 
-  // Fungsi logout
   const handleLogout = () => {
-    // Logika tambahan untuk logout, misalnya clear token atau session
     console.log("User logged out!");
-    // Redirect ke halaman login
     window.location.href = "/login";
   };
 

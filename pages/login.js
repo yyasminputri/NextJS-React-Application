@@ -17,11 +17,15 @@ export default function Login() {
       const response = await axios.post("/api/auth/login", { email, password });
       setMessage(response.data.message);
 
+      // Simpan token ke localStorage
       localStorage.setItem("token", response.data.token);
 
-      setTimeout(() => {
+      // Redirect berdasarkan email
+      if (email === "admin@gmail.com") {
+        router.push("/admin");
+      } else {
         router.push("/");
-      }, 2000);
+      }
     } catch (error) {
       setMessage(error.response?.data?.error || "Login failed!");
     }
